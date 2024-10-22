@@ -9,20 +9,14 @@ workflows:
           #!/bin/bash
           set -ex
           npm install
-      - name: Build Web Assets
-        script: |
-          #!/bin/bash
-          set -ex
           npm run build
-      - name: Copy Web Assets to Android
+      - name: Build Android
         script: |
           #!/bin/bash
           set -ex
-          npx cap copy android
-      - name: Build Android App
-        script: |
-          #!/bin/bash
-          set -ex
-          cd android && ./gradlew assembleRelease
+          npx cap sync android
+          cd android
+          chmod +x gradlew  # Add this line to change permissions
+          ./gradlew assembleRelease
     artifacts:
       - android/app/build/outputs/apk/release/*.apk
