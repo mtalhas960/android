@@ -1,0 +1,28 @@
+version: 1.0
+
+workflows:
+  android-workflow:
+    name: Android Workflow
+    scripts:
+      - name: Install Dependencies
+        script: |
+          #!/bin/bash
+          set -ex
+          npm install
+      - name: Build Web Assets
+        script: |
+          #!/bin/bash
+          set -ex
+          npm run build
+      - name: Copy Web Assets to Android
+        script: |
+          #!/bin/bash
+          set -ex
+          npx cap copy android
+      - name: Build Android App
+        script: |
+          #!/bin/bash
+          set -ex
+          cd android && ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/apk/release/*.apk
